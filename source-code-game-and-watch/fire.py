@@ -18,6 +18,8 @@ def draw():
         if j.state == 0: j.draw()
         if j.state == -1 and count%2 == 0: j.draw()
     screen.draw.text("SAVED: "+str(score), topleft = (580, 120), color=(0,0,0) , fontsize=25)
+    if gameState == 1:
+        screen.draw.text("GAME OVER! Press SPACE to restart", center=(320, 200), color=(255, 0, 0), fontsize=30)
     
 def update():
     global count
@@ -41,17 +43,23 @@ def doUpdate():
                     score += 1
                     makeJumper()
             if (j.frame == 4 and catcherPos != 0) or (j.frame == 12 and catcherPos != 1) or (j.frame == 18 and catcherPos != 2):
+                sounds.miss.play()
                 j.state = -1
                 j.image = "jumperdropped"
                 j.y += 50
                 gameState = 1
 
 def on_key_down(key):
-    global moveCatcher
+    global moveCatcher, gameState, count, catcherPos, score, jumpers
     if key.name == "LEFT":
         moveCatcher = -1
     if key.name == "RIGHT":
         moveCatcher = 1
+    if key.name == "SPACE" and gameState == 1:
+        gameState = 0
+        count = catcherPos = moveCatcher = score = 0
+        jumpers.clear()
+        makeJumper()
         
 def makeJumper():
     if len(jumpers)%5 == 4:
@@ -67,4 +75,6 @@ def limit(n, minn, maxn):
 
 makeJumper()
 
+sounds.fire.play()
 pgzrun.go()
+
