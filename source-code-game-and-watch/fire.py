@@ -1,5 +1,7 @@
 # Fire
 import pgzrun
+from pgzero.builtins import sounds, Actor
+
 count = catcherPos = moveCatcher = gameState = score = 0
 catchers = []
 jumpers = []
@@ -74,7 +76,6 @@ def limit(n, minn, maxn):
     return max(min(maxn, n), minn)
 
 makeJumper()
-
 sounds.fire.play()
 pgzrun.go()
 
